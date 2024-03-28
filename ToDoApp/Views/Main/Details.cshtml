@@ -1,0 +1,42 @@
+﻿@model ToDoApp.Models.TodoItem
+
+<h1 class="text-center">Details</h1>
+<style>
+    .btn-primary {
+        background-color: #000;
+        border: 2px solid #000;
+        color: darkorange;
+    }
+</style>
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Task</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Description)</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.Description)</dd>
+
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DueDate)</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.DueDate)</dd>
+
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.IsCompleted)</dt>
+                <dd class="col-sm-10">
+                    @if (Model.IsCompleted)
+                    {
+                        <span style="color: green;">&#10004;</span> <!-- Green tick -->
+                    }
+                    else
+                    {
+                        <span style="color: red;">&#10006;</span> <!-- Red cross -->
+                    }
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+</div>

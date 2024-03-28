@@ -1,0 +1,47 @@
+﻿@model ToDoApp.Models.TodoItem
+
+<h1 class="text-center">Delete</h1>
+<style>
+    .btn-primary {
+        background-color: #000;
+        border: 2px solid #000;
+        color: darkorange;
+    }
+</style>
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Are you sure.. you want to delete this?</h3>
+            <hr />
+            <h4>Task</h4>
+            <dl class="row">
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Description)</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.Description)</dd>
+
+                <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DueDate)</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.DueDate)</dd>
+
+                <dt class="col-sm-2">Is Completed</dt>
+                <dd class="col-sm-10">
+                    @if (Model.IsCompleted)
+                    {
+                        <span style="color: green;">&#10004;</span> <!-- Green tick -->
+                    }
+                    else
+                    {
+                        <span style="color: red;">&#10006;</span> <!-- Red cross -->
+                    }
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a class="btn btn-primary" asp-action="Index">Back</a>
+    </form>
+</div>

@@ -1,0 +1,153 @@
+﻿@model List<ToDoApp.Models.TodoItem>
+
+@{
+    ViewData["Title"] = "To-Do List";
+}
+
+<style>
+    /* Copy CSS styles from the Create view */
+
+    .container-box {
+        background-color: white;
+        border-radius: 2px;
+        padding: 12px; /* Reduced padding */
+        margin-top: 25px;
+        width: 58%; /* Set the width to 80% */
+        margin-left: auto; /* Center the container horizontally */
+        margin-right: auto; /* Center the container horizontally */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1.text-center {
+        font-size: 36px; /* Increase font size */
+        font-weight: bold; /* Increase font thickness */
+        margin-bottom: 20px; /* Add space below the heading */
+        color: black; /* Set heading text color to darkorange */
+    }
+
+    .form-control {
+        border: 3px solid black; /* Set border color to black with 3px width */
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 20px; /* Add margin to separate form fields */
+    }
+
+        .form-control,
+        .form-control::placeholder {
+            color: darkorange; /* Set text color to darkorange */
+        }
+
+    ::placeholder {
+        opacity: 1; /* Ensure placeholder text is fully visible */
+    }
+
+    .text-danger {
+        color: black; /* Set validation message color to black */
+    }
+
+    .btn-primary {
+        background-color: #000;
+        border: 2px solid #000;
+        color: darkorange;
+    }
+
+    /* Change radio button color */
+    .form-check-input:checked {
+        background-color: darkorange;
+        border-color: darkorange;
+    }
+
+    .overdue {
+        color: red;
+    }
+
+    .time-left {
+        color: green; /* Set text color to green */
+    }
+</style>
+
+<h1 class="text-center">To-Do List</h1>
+
+<div class="container">
+    <p class="text-right">
+        <a class="btn btn-primary" asp-action="Create">Create New</a>
+    </p>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Description</th>
+                    <th>DueDate&Time</th>
+                    <th>Time Left</th>
+                    <th>Completed</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var todo in Model)
+                {
+                    <tr>
+                        <td>@todo.Description</td>
+                        <td>@todo.DueDate.ToString("MM/dd/yyyy hh:mm tt")</td>
+                        <td><span class="time-left" data-due-date="@todo.DueDate.ToString("o")"></span></td>
+                        <td>@(todo.IsCompleted ? "Yes" : "No")</td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Actions">
+                                <a class="btn btn-primary" href="@Url.Action("Edit", new { id = todo.Id })">Edit</a>
+                                <a class="btn btn-secondary" href="@Url.Action("Details", new { id = todo.Id })">Details</a>
+                                <a class="btn btn-danger" href="@Url.Action("Delete", new { id = todo.Id })">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        setInterval(updateTimeLeft, 1000);
+
+        function updateTimeLeft() {
+            // Get all elements with the "time-left" class
+            var elements = document.getElementsByClassName("time-left");
+            for (var i = 0; i < elements.length; i++) {
+                // Get the due date from the data attribute
+                var dueDate = new Date(elements[i].getAttribute("data-due-date"));
+                // Calculate the time left
+                var currentTime = new Date();
+                var totalSeconds = Math.floor((dueDate - currentTime) / 1000);
+
+                // Convert total seconds to hours, minutes, and days
+                var daysLeft = Math.floor(totalSeconds / (3600 * 24));
+                var hoursLeft = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+                var minutesLeft = Math.floor((totalSeconds % 3600) / 60);
+
+                // Format the time left
+                var formattedTimeLeft = "";
+                if (daysLeft > 0) {
+                    formattedTimeLeft += daysLeft + " day, ";
+                }
+                formattedTimeLeft += daysLeft + " day, "+hoursLeft + " hours, " + minutesLeft + " minutes";
+
+                // Check if time left is less than or equal to zero
+                if (totalSeconds <= 0) {
+                    hoursLeft -= -1;
+                    daysLeft -= -1;
+                    minutesLeft -= -1;
+
+                    elements[i].textContent = "Overdue by " + (-daysLeft) + " days, " + (-hoursLeft) + " hours, " + (-minutesLeft) + " minutes";
+                    elements[i].style.color = "red"; // Set text color to red
+                } else {
+                    // Update the text content of the element
+                    elements[i].textContent = formattedTimeLeft + " Left";
+                    elements[i].style.color = ""; // Reset text color
+                }
+            }
+        }
+    </script>
+}
+
+
+

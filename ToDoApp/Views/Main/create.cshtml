@@ -1,0 +1,95 @@
+﻿@model ToDoApp.Models.TodoItem
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<style>
+
+    .container-box {
+        background-color: white;
+        border-radius: 2px;
+        padding: 12px; /* Reduced padding */
+        margin-top: 25px;
+        width: 58%; /* Set the width to 80% */
+        margin-left: auto; /* Center the container horizontally */
+        margin-right: auto; /* Center the container horizontally */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1.text-center {
+        font-size: 36px; /* Increase font size */
+        font-weight: bold; /* Increase font thickness */
+        margin-bottom: 20px; /* Add space below the heading */
+        color: black; /* Set heading text color to darkorange */
+    }
+
+    .form-control {
+        border: 3px solid black; /* Set border color to black with 3px width */
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 20px; /* Add margin to separate form fields */
+    }
+
+        .form-control,
+        .form-control::placeholder {
+            color: #6c757D; /* Set text color to darkorange */
+        }
+
+    ::placeholder {
+        opacity: 1; /* Ensure placeholder text is fully visible */
+    }
+
+    .text-danger {
+        color: black; /* Set validation message color to black */
+    }
+
+    .btn-primary {
+        background-color: #000;
+        border: 2px solid #000;
+        color: darkorange;
+    }
+
+    /* Change radio button color */
+    .form-check-input:checked {
+        background-color: darkorange;
+        border-color: darkorange;
+    }
+
+</style>
+
+<div class="container container-box">
+    <h1 class="text-center">Create Task</h1>
+    <form asp-action="Create" method="post">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <!-- Center the columns -->
+                <div class="mb-3">
+                    <textarea asp-for="Description" class="form-control form-control-lg" rows="4" placeholder="Enter Description" style="border: 2px solid #000;"></textarea>
+                    <span asp-validation-for="Description" style="color: black;"></span>
+                </div>
+                <div class="mb-3">
+                    <input asp-for="DueDate" class="form-control form-control-lg" placeholder="Enter Due Date" style="border: 2px solid #000;" />
+                    <span asp-validation-for="DueDate" style="color: black;"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="control-label">Is Completed?</label><br />
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="IsCompleted" value="true" />
+                        <label class="form-check-label" for="IsCompleted">Yes</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="IsCompleted" value="false" />
+                        <label class="form-check-label" for="IsCompleted">No</label>
+                    </div>
+                    <span asp-validation-for="IsCompleted" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-primary btn-lg">Create</button>
+            </div>
+        </div>
+    </form>
+</div>
